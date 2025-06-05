@@ -106,14 +106,12 @@ a {
     justify-content: center;
     max-height: 60px;
 }
-
 @media (max-width: 480px) {
     .container {
         width: 90vw;
         padding: 20px;
         top: 10%;
     }
-
     #qrContainer {
         width: 100%;
         max-width: 90vw;
