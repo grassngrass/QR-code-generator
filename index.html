@@ -46,7 +46,7 @@
       if (qrImage) {
         const imgSrc = qrImage.getAttribute('src');
 
-        // Use fetch + Blob to force download (mobile-compatible)
+    
         fetch(imgSrc)
           .then(res => res.blob())
           .then(blob => {
@@ -82,7 +82,7 @@
     });
 
     downloadBtn.addEventListener('click', (e) => {
-      e.preventDefault(); // prevent default <a> click behavior
+      e.preventDefault(); 
       downloadQR();
     });
 
