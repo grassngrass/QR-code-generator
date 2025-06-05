@@ -30,6 +30,7 @@
 
     const generateQR = (qrtext) => {
       qrContainer.innerHTML = ""; 
+      qrContainer.classList.add('img-show');  
       return new QRCode(qrContainer, {
         text: qrtext,
         width: 200,
@@ -67,14 +68,18 @@
     });
 
     downloadBtn.addEventListener('click', downloadQR);
+
     const refreshBtn = document.getElementById('refreshBtn');
     refreshBtn.addEventListener('click', () => {
         qrText.value = "";
         qrContainer.innerHTML = "";
+        qrContainer.classList.remove('img-show');  
         downloadBtn.setAttribute('href', '');
-        downloadBtn.classList.remove('download-active');
-});
-
+    });
   </script>
 </body>
 </html>
+
+
+
+
