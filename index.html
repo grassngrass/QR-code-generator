@@ -16,7 +16,7 @@
     <button type="button" class="btn" id="genBtn">Generate QR Code</button>
     <button type="button" class="btn btn-r" id="refreshBtn">Refresh</button>
 
-    <a href="#" class="btn" id="downloadBtn" download="QRcode.jpg">Download</a>
+    <a href="#" class="btn" id="downloadBtn">Download</a>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -45,8 +45,23 @@
       qrImage = document.querySelector('#qrContainer img');
       if (qrImage) {
         const imgSrc = qrImage.getAttribute('src');
-        downloadBtn.setAttribute('href', imgSrc);
-        downloadBtn.setAttribute('download', 'QRcode.jpg');
+
+        // Use fetch + Blob to force download (mobile-compatible)
+        fetch(imgSrc)
+          .then(res => res.blob())
+          .then(blob => {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'QRcode.jpg';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+          })
+          .catch(() => {
+            alert("Download failed. Try generating the QR code again.");
+          });
       } else {
         alert("QR Code not ready yet.");
       }
@@ -61,13 +76,15 @@
           if (qrImage) {
             const imgSrc = qrImage.getAttribute('src');
             downloadBtn.setAttribute('href', imgSrc);
-            downloadBtn.setAttribute('download', 'QRcode.jpg');
           }
         }, 300);
       }
     });
 
-    downloadBtn.addEventListener('click', downloadQR);
+    downloadBtn.addEventListener('click', (e) => {
+      e.preventDefault(); // prevent default <a> click behavior
+      downloadQR();
+    });
 
     const refreshBtn = document.getElementById('refreshBtn');
     refreshBtn.addEventListener('click', () => {
@@ -79,6 +96,7 @@
   </script>
 </body>
 </html>
+
 
 
 
